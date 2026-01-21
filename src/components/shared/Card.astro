@@ -1,0 +1,22 @@
+---
+interface Props {
+  class?: string;
+  variant?: "default" | "glass" | "primary";
+}
+
+const { class: className, variant = "default" } = Astro.props;
+
+const baseStyles = "rounded-2xl border transition-all duration-300";
+
+const variants = {
+  default: "border-border/70 bg-card/40 backdrop-blur-md shadow-sm",
+  glass:
+    "border-border/70 bg-card/80 backdrop-blur-xl shadow-[0_22px_60px_rgba(15,23,42,0.65)]",
+  primary:
+    "border-primary/60 bg-card/80 backdrop-blur-xl shadow-[0_22px_60px_rgba(15,23,42,0.75)]",
+};
+---
+
+<div class:list={[baseStyles, variants[variant], className]}>
+  <slot />
+</div>

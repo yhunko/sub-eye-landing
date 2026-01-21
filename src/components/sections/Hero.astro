@@ -1,0 +1,150 @@
+---
+import type { Lang, LandingDict } from "../../i18n";
+import VersionPill from "../shared/VersionPill.astro";
+import Button from "../shared/Button.astro";
+import Card from "../shared/Card.astro";
+
+interface Props {
+  lang: Lang;
+  t: LandingDict;
+}
+
+const { t } = Astro.props;
+---
+
+<section
+  id="hero"
+  class="border-border/60 scroll-mt-12 border-b bg-[radial-gradient(circle_at_top,_rgba(129,140,248,0.22),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(45,212,191,0.18),_transparent_55%)]"
+>
+  <div
+    class="container grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:py-20"
+  >
+    <div class="space-y-6 sm:space-y-8">
+      <VersionPill label={t.hero.versionLive} fallbackVersion="v2.0.0" />
+
+      <div class="space-y-3 sm:space-y-4">
+        <h1
+          class="text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl"
+        >
+          {t.hero.title}
+        </h1>
+        <p class="text-muted-foreground max-w-xl text-sm sm:text-base">
+          {t.hero.subtitle}
+        </p>
+      </div>
+
+      <div
+        class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4"
+      >
+        <Button href="https://app.subeye.cc/auth/sign-up">
+          {t.hero.primaryCta}
+        </Button>
+        <Button href="https://app.subeye.cc" variant="secondary">
+          {t.hero.secondaryCta}
+        </Button>
+      </div>
+
+      <div class="text-muted-foreground flex flex-col gap-1 text-xs">
+        <span>{t.hero.primaryNote}</span>
+        <span>{t.hero.secondaryNote}</span>
+      </div>
+
+      <dl class="grid grid-cols-2 gap-4 text-xs sm:flex sm:gap-8 sm:text-sm">
+        <div>
+          <dt class="text-muted-foreground">{t.hero.stats.timeLabel}</dt>
+          <dd class="font-medium">{t.hero.stats.timeValue}</dd>
+        </div>
+        <div>
+          <dt class="text-muted-foreground">{t.hero.stats.focusLabel}</dt>
+          <dd class="font-medium">{t.hero.stats.focusValue}</dd>
+        </div>
+        <div>
+          <dt class="text-muted-foreground">{t.hero.stats.goalLabel}</dt>
+          <dd class="font-medium">{t.hero.stats.goalValue}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute inset-0 -translate-x-4 bg-[conic-gradient(from_220deg_at_50%_50%,_rgba(129,140,248,0.2),_rgba(45,212,191,0.28),_transparent)] opacity-50 blur-3xl"
+        aria-hidden="true"
+      >
+      </div>
+      <Card
+        variant="glass"
+        class="relative space-y-4 p-4 sm:p-5 lg:p-6"
+        aria-label={t.hero.preview.ariaLabel}
+      >
+        <div class="flex items-center justify-between gap-4">
+          <div class="space-y-0.5">
+            <p
+              class="text-muted-foreground text-xs font-medium tracking-[0.16em] uppercase"
+            >
+              {t.hero.preview.thisMonth}
+            </p>
+            <p class="text-lg font-semibold">{t.hero.preview.spend}</p>
+          </div>
+          <div
+            class="rounded-full border border-emerald-200 bg-emerald-100/50 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400"
+          >
+            {t.hero.preview.savings}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div
+            class="border-border/80 bg-muted/10 space-y-1.5 rounded-xl border p-3"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-medium">Spotify</span>
+              <span class="text-muted-foreground">€9.99</span>
+            </div>
+            <div
+              class="text-muted-foreground flex items-center justify-between text-[11px]"
+            >
+              <span>{t.hero.preview.spotifyMeta}</span>
+              <span>{t.hero.preview.spotifyRenews}</span>
+            </div>
+          </div>
+
+          <div
+            class="border-border/80 bg-muted/10 space-y-1.5 rounded-xl border p-3"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-medium">Netflix</span>
+              <span class="text-muted-foreground">€15.99</span>
+            </div>
+            <div
+              class="text-muted-foreground flex items-center justify-between text-[11px]"
+            >
+              <span>{t.hero.preview.netflixMeta}</span>
+              <span>{t.hero.preview.netflixRenews}</span>
+            </div>
+          </div>
+
+          <div
+            class="col-span-2 space-y-1.5 rounded-xl border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-500/50 dark:bg-emerald-500/10"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-medium">{t.hero.preview.duplicateTitle}</span>
+              <span class="text-[11px] text-emerald-600 dark:text-emerald-200"
+                >{t.hero.preview.duplicateSavings}</span
+              >
+            </div>
+            <p class="text-[11px] text-emerald-700/80 dark:text-emerald-100/90">
+              {t.hero.preview.duplicateBody}
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="border-border/60 text-muted-foreground flex items-center justify-between border-t pt-3 text-[11px]"
+        >
+          <span>{t.hero.preview.footerLeft}</span>
+          <span>{t.hero.preview.footerRight}</span>
+        </div>
+      </Card>
+    </div>
+  </div>
+</section>

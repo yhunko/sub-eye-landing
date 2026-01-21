@@ -1,0 +1,29 @@
+---
+import Image from "astro/components/Image.astro";
+
+interface Props {
+  href: string;
+  label: string;
+  lang: "en" | "ua";
+}
+
+const { href, label, lang } = Astro.props;
+
+// We show the flag of the language we are switching TO
+const countryCode = lang === "en" ? "ua" : "gb";
+---
+
+<a
+  href={href}
+  class="border-border bg-background/70 text-foreground hover:bg-muted/40 inline-flex size-9 items-center justify-center rounded-full border transition-colors"
+  aria-label={label}
+>
+  <Image
+    src={`https://flagcdn.com/${countryCode}.svg`}
+    class="h-3 w-4 rounded-xs"
+    width={16 * 4}
+    height={12 * 4}
+    alt={`country flag of ${countryCode}`}
+    loading="eager"
+  />
+</a>

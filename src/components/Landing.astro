@@ -1,0 +1,31 @@
+---
+import { getLandingDict, type Lang } from "../i18n";
+import Header from "./shared/Header.astro";
+import Hero from "./sections/Hero.astro";
+import Features from "./sections/Features.astro";
+import Pricing from "./sections/Pricing.astro";
+import FAQ from "./sections/FAQ.astro";
+import CTA from "./sections/CTA.astro";
+import Footer from "./shared/Footer.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getLandingDict(lang);
+
+const otherLangHref = lang === "ua" ? "/" : "/ua/";
+---
+
+<Header lang={lang} t={t} otherLangHref={otherLangHref} />
+
+<main>
+  <Hero lang={lang} t={t} />
+  <Features t={t} />
+  <Pricing t={t} />
+  <FAQ t={t} />
+  <CTA t={t} />
+</main>
+
+<Footer t={t} />

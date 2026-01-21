@@ -1,0 +1,67 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  icon?: string;
+}
+
+const { question, answer, icon } = Astro.props;
+---
+
+<details
+  class="group border-border/70 bg-card/40 hover:bg-card/60 rounded-2xl border backdrop-blur-md transition-all"
+>
+  <summary
+    class="flex cursor-pointer list-none items-center justify-between gap-3 p-4 sm:p-5"
+  >
+    <div class="flex items-center gap-3">
+      {
+        icon && (
+          <div class="bg-primary/10 text-primary ring-primary/20 group-hover:bg-primary group-hover:text-primary-foreground group-open:bg-primary group-open:text-primary-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-lg ring-1 transition-colors ring-inset">
+            <Fragment set:html={icon} />
+          </div>
+        )
+      }
+      <h3
+        class="group-hover:text-primary group-open:text-primary text-sm font-medium transition-colors sm:text-base"
+      >
+        {question}
+      </h3>
+    </div>
+    <span
+      class="border-border/60 text-muted-foreground group-hover:border-primary/40 inline-flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] transition-transform duration-300 group-open:rotate-45"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 5v14"></path>
+        <path d="M5 12h14"></path>
+      </svg>
+    </span>
+  </summary>
+  <div
+    class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-open:grid-rows-[1fr]"
+  >
+    <div class="overflow-hidden">
+      <p
+        class="text-muted-foreground px-4 pb-5 text-sm leading-relaxed sm:px-5"
+      >
+        {answer}
+      </p>
+    </div>
+  </div>
+</details>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  lang: "en" | "ua";
+  title: string;
+  description: string;
+}
+
+const { lang, title, description } = Astro.props;
+
+const siteName = "SubEye";
+const url = lang === "ua" ? "https://subeye.cc/ua" : "https://subeye.cc";
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#10b981" />
+    <link rel="canonical" href={url} />
+    <meta name="robots" content="index, follow" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content="/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: siteName,
+        url,
+        inLanguage: lang === "ua" ? "uk-UA" : "en-US",
+        description,
+      })}
+    />
+    <script is:inline>
+      (function () {
+        try {
+          // UX: default to dark, allow user override via localStorage.
+          const stored = localStorage.getItem("theme");
+          const theme = stored === "light" ? "light" : "dark";
+          if (theme === "dark") document.documentElement.classList.add("dark");
+          else document.documentElement.classList.remove("dark");
+        } catch {
+          // Fallback if localStorage is unavailable
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-background text-foreground min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
