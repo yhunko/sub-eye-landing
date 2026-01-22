@@ -74,25 +74,20 @@ const { lang, t, otherLangHref } = Astro.props;
       <button
         id="mobile-menu-toggle"
         class="border-border bg-background/70 text-foreground hover:bg-muted/40 inline-flex size-9 cursor-pointer items-center justify-center rounded-full border transition-colors md:hidden"
+        type="button"
         aria-label="Toggle menu"
         aria-expanded="false"
       >
-        <div id="icon-initial">
-          <MenuIcon />
-        </div>
-        <div id="icon-m2c" class="hidden">
-          <MenuToCloseIcon />
-        </div>
-        <div id="icon-c2m" class="hidden">
-          <CloseToMenuIcon />
-        </div>
+        <MenuIcon id="icon-initial" />
+        <MenuToCloseIcon id="icon-m2c" class="hidden" />
+        <CloseToMenuIcon id="icon-c2m" class="hidden" />
       </button>
     </div>
   </div>
 
   <div
     id="mobile-menu"
-    class="border-border/60 bg-background/95 invisible absolute top-full left-0 w-full border-b opacity-0 backdrop-blur-xl transition-all duration-300 md:hidden"
+    class="border-border/60 bg-background/90 invisible absolute top-full left-0 w-full border-b opacity-0 backdrop-blur-sm transition-all duration-300 md:hidden"
   >
     <nav class="container flex flex-col space-y-4 py-6">
       <a href="#product" class="mobile-menu-link text-lg font-medium">
@@ -124,56 +119,86 @@ const { lang, t, otherLangHref } = Astro.props;
 </header>
 
 <script>
-  const toggle = document.getElementById("mobile-menu-toggle");
-  const menu = document.getElementById("mobile-menu");
-  const links = document.querySelectorAll(".mobile-menu-link");
+  (() => {
+    const toggle = document.getElementById("mobile-menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    const links = document.querySelectorAll(".mobile-menu-link");
 
-  const iconInitial = document.getElementById("icon-initial");
-  const iconM2C = document.getElementById("icon-m2c");
-  const iconC2M = document.getElementById("icon-c2m");
+    if (!toggle || !menu) return;
 
-  if (toggle && menu) {
     const updateIcons = (isExpanded: boolean) => {
+      const iconInitial = document.getElementById("icon-initial");
+      const iconM2C = document.getElementById("icon-m2c");
+      const iconC2M = document.getElementById("icon-c2m");
+
       if (iconInitial) iconInitial.classList.add("hidden");
 
       if (isExpanded) {
-        if (iconM2C) iconM2C.classList.remove("hidden");
+        if (iconM2C instanceof SVGSVGElement) {
+          iconM2C.classList.remove("hidden");
+          iconM2C.setCurrentTime(0);
+        }
         if (iconC2M) iconC2M.classList.add("hidden");
       } else {
         if (iconM2C) iconM2C.classList.add("hidden");
-        if (iconC2M) iconC2M.classList.remove("hidden");
+        if (iconC2M instanceof SVGSVGElement) {
+          iconC2M.classList.remove("hidden");
+          iconC2M.setCurrentTime(0);
+        }
       }
     };
 
     toggle.addEventListener("click", () => {
       const isExpanded = toggle.getAttribute("aria-expanded") === "true";
       const nextExpanded = !isExpanded;
-      toggle.setAttribute("aria-expanded", nextExpanded.toString());
 
-      updateIcons(nextExpanded);
+      const handleToggle = () => {
+        toggle.setAttribute("aria-expanded", nextExpanded.toString());
+        updateIcons(nextExpanded);
 
-      if (nextExpanded) {
-        menu.classList.remove("invisible", "opacity-0");
-        menu.classList.add("visible", "opacity-100");
-        document.body.style.overflow = "hidden";
-      } else {
-        menu.classList.remove("visible", "opacity-100");
-        menu.classList.add("invisible", "opacity-0");
-        document.body.style.overflow = "";
+        if (nextExpanded) {
+          menu.classList.remove("invisible", "opacity-0");
+          menu.classList.add("visible", "opacity-100");
+          document.body.style.overflow = "hidden";
+        } else {
+          menu.classList.remove("visible", "opacity-100");
+          menu.classList.add("invisible", "opacity-0");
+          document.body.style.overflow = "";
+        }
+      };
+
+      // @ts-ignore
+      if (!document.startViewTransition) {
+        handleToggle();
+        return;
       }
+
+      // @ts-ignore
+      document.startViewTransition(() => handleToggle());
     });
 
     links.forEach((link) => {
       link.addEventListener("click", () => {
         const isExpanded = toggle.getAttribute("aria-expanded") === "true";
         if (isExpanded) {
-          toggle.setAttribute("aria-expanded", "false");
-          updateIcons(false);
-          menu.classList.remove("visible", "opacity-100");
-          menu.classList.add("invisible", "opacity-0");
-          document.body.style.overflow = "";
+          const handleClose = () => {
+            toggle.setAttribute("aria-expanded", "false");
+            updateIcons(false);
+            menu.classList.remove("visible", "opacity-100");
+            menu.classList.add("invisible", "opacity-0");
+            document.body.style.overflow = "";
+          };
+
+          // @ts-ignore
+          if (!document.startViewTransition) {
+            handleClose();
+            return;
+          }
+
+          // @ts-ignore
+          document.startViewTransition(() => handleClose());
         }
       });
     });
-  }
+  })();
 </script>

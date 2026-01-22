@@ -1,9 +1,18 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+}
+const { id, class: className } = Astro.props;
+---
+
 <svg
+  id={id}
   xmlns="http://www.w3.org/2000/svg"
   width="20"
   height="20"
   viewBox="0 0 24 24"
-  class="size-5"
+  class:list={["size-5", className]}
 >
   <!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
   <g
