@@ -13,7 +13,7 @@
   --color-muted-foreground: oklch(0.4 0.015 285);
   --color-border: oklch(0.9 0.008 285);
   --color-ring: oklch(0.4 0.015 285 / 0.5);
-  --font-sans: "Nunito", system-ui, -apple-system, sans-serif;
+  --font-sans: "Nunito Variable", system-ui, -apple-system, sans-serif;
   --radius-lg: 14px;
 }
 
