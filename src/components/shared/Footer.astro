@@ -13,11 +13,14 @@ const { t } = Astro.props;
     class="text-muted-foreground container flex flex-col items-center justify-between gap-4 py-8 text-xs sm:py-10 sm:text-sm md:flex-row"
   >
     <p>© {new Date().getFullYear()} SubEye. {t.footer.rights}</p>
-    <div class="flex flex-col items-center gap-1 md:flex-row md:gap-1">
-      <!--<a href="mailto:hello@subeye.cc" class="hover:text-foreground transition-colors">-->
+    <div class="flex flex-col items-center gap-1 md:flex-row md:gap-4">
+      <!--<a-->
+      <!--  href="mailto:hello@subeye.cc"-->
+      <!--  class="hover:text-foreground transition-colors"-->
+      <!--&gt;-->
       <!--  {t.footer.contact}-->
       <!--</a>-->
-      <!--<span class="hidden sm:inline text-border">•</span>-->
+      <!--<span class="text-border hidden md:inline">•</span>-->
       <span>{t.footer.tagline}</span>
     </div>
   </div>

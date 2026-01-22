@@ -7,12 +7,12 @@
   --color-foreground: oklch(0.16 0.006 285);
   --color-card: oklch(0.98 0.005 285);
   --color-card-foreground: oklch(0.16 0.006 285);
-  --color-primary: oklch(0.55 0.22 150);
+  --color-primary: oklch(0.42 0.17 150);
   --color-primary-foreground: oklch(0.98 0 0);
   --color-muted: oklch(0.95 0.01 285);
-  --color-muted-foreground: oklch(0.52 0.015 285);
+  --color-muted-foreground: oklch(0.4 0.015 285);
   --color-border: oklch(0.9 0.008 285);
-  --color-ring: oklch(0.52 0.015 285 / 0.5);
+  --color-ring: oklch(0.4 0.015 285 / 0.5);
   --font-sans: "Nunito", system-ui, -apple-system, sans-serif;
   --radius-lg: 14px;
 }
@@ -27,12 +27,12 @@
     --color-foreground: oklch(0.98 0 0);
     --color-card: oklch(0.22 0.01 285);
     --color-card-foreground: oklch(0.98 0 0);
-    --color-primary: oklch(0.7 0.24 150);
-    --color-primary-foreground: oklch(0.12 0.015 285);
+    --color-primary: oklch(0.72 0.24 150);
+    --color-primary-foreground: oklch(0.1 0.015 285);
     --color-muted: oklch(0.22 0.005 285);
-    --color-muted-foreground: oklch(0.72 0.02 285);
+    --color-muted-foreground: oklch(0.85 0.02 285);
     --color-border: oklch(1 0 0 / 0.14);
-    --color-ring: oklch(0.72 0.02 285 / 0.5);
+    --color-ring: oklch(0.85 0.02 285 / 0.5);
   }
 
   body {

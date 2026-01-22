@@ -10,11 +10,13 @@ interface Props {
 const { lang, title, description } = Astro.props;
 
 const siteName = "SubEye";
-const url = lang === "ua" ? "https://subeye.cc/ua" : "https://subeye.cc";
+const baseUrl = "https://subeye.cc";
+const url = lang === "ua" ? `${baseUrl}/ua/` : `${baseUrl}/`;
+const htmlLang = lang === "ua" ? "uk" : "en";
 ---
 
 <!doctype html>
-<html lang={lang} class="dark">
+<html lang={htmlLang} class="dark">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,6 +26,17 @@ const url = lang === "ua" ? "https://subeye.cc/ua" : "https://subeye.cc";
     <link rel="canonical" href={url} />
     <meta name="robots" content="index, follow" />
 
+    <link rel="alternate" hreflang="en" href={`${baseUrl}/`} />
+    <link rel="alternate" hreflang="uk" href={`${baseUrl}/ua/`} />
+    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/`} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+
     <title>{title}</title>
     <meta name="description" content={description} />
 
@@ -32,23 +45,41 @@ const url = lang === "ua" ? "https://subeye.cc/ua" : "https://subeye.cc";
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:locale" content={lang === "ua" ? "uk_UA" : "en_US"} />
+    {lang === "en" && <meta property="og:locale:alternate" content="uk_UA" />}
+    {lang === "ua" && <meta property="og:locale:alternate" content="en_US" />}
+    <meta property="og:image" content={`${baseUrl}/og-image.png`} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content={`${baseUrl}/og-image.png`} />
 
     <script
       type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: siteName,
-        url,
-        inLanguage: lang === "ua" ? "uk-UA" : "en-US",
-        description,
-      })}
+      set:html={JSON.stringify([
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: siteName,
+          url,
+          inLanguage: lang === "ua" ? "uk-UA" : "en-US",
+          description,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: siteName,
+          operatingSystem: "Web",
+          applicationCategory: "FinanceApplication",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+          },
+          description,
+        },
+      ])}
     />
     <script is:inline>
       (function () {
