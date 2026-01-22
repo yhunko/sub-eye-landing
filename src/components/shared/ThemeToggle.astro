@@ -42,14 +42,23 @@ const toggleId = "theme-toggle";
         ? "light"
         : "dark";
 
+      const handleApply = () => {
+        apply(next);
+        const iconId = next === "light" ? "theme-icon-sun" : "theme-icon-moon";
+        const icon = document.getElementById(iconId);
+        if (icon instanceof SVGSVGElement) {
+          icon.setCurrentTime(0);
+        }
+      };
+
       // @ts-ignore
       if (!document.startViewTransition) {
-        apply(next);
+        handleApply();
         return;
       }
 
       // @ts-ignore
-      document.startViewTransition(() => apply(next));
+      document.startViewTransition(() => handleApply());
     });
   })();
 </script>
