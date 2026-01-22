@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://subeye.cc",
+  site: "https://www.subeye.cc",
 
   i18n: {
     locales: ["en", "ua"],
