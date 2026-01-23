@@ -8,6 +8,7 @@ export const en: LandingDict = {
     signin: "Sign in",
     signup: "Sign up",
     switchTo: "Switch language",
+    skipToContent: "Skip to content",
     brandTagline: "Subscriptions simplified",
   },
   hero: {

@@ -8,6 +8,7 @@ export interface LandingDict {
     signin: string;
     signup: string;
     switchTo: string;
+    skipToContent: string;
     brandTagline: string;
   };
   hero: {

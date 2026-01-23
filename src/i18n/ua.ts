@@ -8,6 +8,7 @@ export const ua: LandingDict = {
     signin: "Увійти",
     signup: "Зареєструватися",
     switchTo: "Перемкнути мову",
+    skipToContent: "Перейти до вмісту",
     brandTagline: "Передплати - це просто",
   },
   hero: {

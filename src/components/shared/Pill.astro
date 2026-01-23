@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const baseStyles =
+  "text-primary/90 bg-primary/10 ring-primary/20 inline-flex rounded-full px-3 py-1 text-xxs font-semibold uppercase tracking-[0.2em] ring-1 ring-inset";
+---
+
+<span class:list={[baseStyles, className]}>
+  <slot />
+</span>

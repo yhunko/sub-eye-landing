@@ -1,20 +1,14 @@
 ---
-interface Props {
-  id?: string;
-  class?: string;
-}
-const { id, class: className } = Astro.props;
+const props = Astro.props;
 ---
 
 <svg
-  id={id}
   xmlns="http://www.w3.org/2000/svg"
-  width="20"
-  height="20"
+  width="1em"
+  height="1em"
   viewBox="0 0 24 24"
-  class:list={["size-5", className]}
->
-  <!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
+  {...props}
+  ><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
   <path
     fill="none"
     stroke="currentColor"
@@ -22,13 +16,11 @@ const { id, class: className } = Astro.props;
     stroke-linejoin="round"
     stroke-width="2"
     d="M5 5L12 12L19 5M12 12H12M5 19L12 12L19 19"
-  >
-    <animate
+    ><animate
       fill="freeze"
       attributeName="d"
-      begin="0.1s"
       dur="0.4s"
       values="M5 5L12 12L19 5M12 12H12M5 19L12 12L19 19;M5 5L12 5L19 5M5 12H19M5 19L12 19L19 19"
-    ></animate>
-  </path>
-</svg>
+    ></animate></path
+  ></svg
+>

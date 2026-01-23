@@ -1,4 +1,5 @@
 ---
+import GitHubIconIcon from "./icons/GitHubIcon.astro";
 import type { LandingDict } from "../../i18n";
 
 interface Props {
@@ -14,14 +15,25 @@ const { t } = Astro.props;
   >
     <p>© {new Date().getFullYear()} SubEye. {t.footer.rights}</p>
     <div class="flex flex-col items-center gap-1 md:flex-row md:gap-4">
-      <!--<a-->
-      <!--  href="mailto:hello@subeye.cc"-->
-      <!--  class="hover:text-foreground transition-colors"-->
-      <!--&gt;-->
-      <!--  {t.footer.contact}-->
-      <!--</a>-->
-      <!--<span class="text-border hidden md:inline">•</span>-->
       <span>{t.footer.tagline}</span>
+      <a
+        href="mailto:hello@subeye.cc"
+        class="hover:text-foreground transition-colors"
+      >
+        {t.footer.contact}
+      </a>
+
+      <div class="hidden flex-row gap-1 md:flex">
+        <a
+          href="https://github.com/yhunko/sub-eye"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub link"
+          class="transition-transform duration-300 will-change-transform hover:scale-110"
+        >
+          <GitHubIconIcon class="size-8" />
+        </a>
+      </div>
     </div>
   </div>
 </footer>

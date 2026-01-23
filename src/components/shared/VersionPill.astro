@@ -6,7 +6,8 @@ interface Props {
 
 const { label, fallbackVersion = "v2.0.0" } = Astro.props;
 
-let version = fallbackVersion;
+let displayVersion = fallbackVersion;
+let versionTag = fallbackVersion;
 
 try {
   const res = await fetch(
@@ -20,7 +21,9 @@ try {
   );
   if (res.ok) {
     const data = await res.json();
-    version = data?.name || data?.tag_name || fallbackVersion;
+    const tagName = data?.tag_name || fallbackVersion;
+    displayVersion = data?.name || tagName;
+    versionTag = tagName;
   }
 } catch (error) {
   console.warn("Failed to load latest release:", error);
@@ -28,14 +31,16 @@ try {
 ---
 
 <a
-  href={`https://github.com/yhunko/sub-eye/releases/${version}`}
+  href={`https://github.com/yhunko/sub-eye/releases/${encodeURIComponent(
+    versionTag,
+  )}`}
   class="inline-flex cursor-pointer items-center gap-3 rounded-full border border-emerald-300 bg-emerald-50 px-5 py-2.5 text-sm font-semibold text-emerald-950 shadow-[0_10px_30px_rgba(16,185,129,0.12)] backdrop-blur transition duration-500 ease-in-out will-change-transform hover:ring-2 hover:ring-emerald-400 dark:border-emerald-400/70 dark:bg-emerald-500/15 dark:text-emerald-50 dark:shadow-[0_10px_30px_rgba(16,185,129,0.15)] dark:hover:ring-emerald-700"
-  aria-label={`SubEye version ${version} ${label}`}
+  aria-label={`SubEye version ${displayVersion} ${label}`}
 >
   <span
     class="inline-flex size-2.5 animate-pulse rounded-full bg-emerald-500 shadow-[0_0_0_6px_rgba(16,185,129,0.20)] dark:bg-emerald-400 dark:shadow-[0_0_0_6px_rgba(52,211,153,0.24)]"
     aria-hidden="true"></span>
-  <span class="tracking-tight">{version}</span>
+  <span class="tracking-tight">{displayVersion}</span>
   <span class="font-normal text-emerald-900/80 dark:text-emerald-50/90"
     >{label}</span
   >

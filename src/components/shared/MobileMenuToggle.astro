@@ -1,0 +1,32 @@
+---
+import MenuIcon from "./icons/MenuIcon.astro";
+---
+
+<button
+  data-mobile-menu-toggle
+  class="border-border bg-background/70 text-foreground hover:bg-muted/40 inline-flex size-9 cursor-pointer items-center justify-center rounded-full border transition-colors md:hidden"
+  type="button"
+  aria-label="Toggle menu"
+  aria-controls="mobile-menu"
+  aria-expanded="false"
+>
+  <MenuIcon class="size-6" />
+</button>
+
+<script>
+  function setupToggle() {
+    const toggle = document.querySelector("[data-mobile-menu-toggle]");
+    if (!toggle) return;
+
+    toggle.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("toggle-mobile-menu"));
+    });
+
+    window.addEventListener("mobile-menu-changed", ((e: CustomEvent) => {
+      toggle.setAttribute("aria-expanded", String(e.detail.isOpen));
+    }) as EventListener);
+  }
+
+  setupToggle();
+  document.addEventListener("astro:after-swap", setupToggle);
+</script>

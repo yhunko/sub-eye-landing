@@ -15,6 +15,7 @@
   --color-ring: oklch(0.4 0.015 285 / 0.5);
   --font-sans: "Nunito Variable", system-ui, -apple-system, sans-serif;
   --radius-lg: 14px;
+  --text-xxs: 10px;
 }
 
 @layer base {

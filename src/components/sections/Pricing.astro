@@ -3,6 +3,7 @@ import type { LandingDict } from "../../i18n";
 import SectionHeader from "../shared/SectionHeader.astro";
 import Button from "../shared/Button.astro";
 import Card from "../shared/Card.astro";
+import Pill from "../shared/Pill.astro";
 
 interface Props {
   t: LandingDict;
@@ -13,7 +14,7 @@ const { t } = Astro.props;
 
 <section
   id="pricing"
-  class="border-border/60 scroll-mt-12 border-b bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.32),_transparent_55%)]"
+  class="border-border/60 scroll-mt-12 border-b bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.32),transparent_55%)]"
 >
   <div class="container space-y-10 py-12 sm:py-16 lg:py-20">
     <SectionHeader
@@ -29,6 +30,7 @@ const { t } = Astro.props;
           class="flex flex-col flex-wrap items-baseline justify-between gap-4"
         >
           <div class="space-y-1.5">
+            <Pill>{t.pricing.badge}</Pill>
             <h3 class="text-lg font-semibold sm:text-xl">{t.pricing.name}</h3>
             <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
               {t.pricing.description}
