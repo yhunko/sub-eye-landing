@@ -134,5 +134,6 @@ export const en: LandingDict = {
     rights: "All rights reserved.",
     contact: "Contact: hello@subeye.cc",
     tagline: "Focused on clear, honest recurring spend.",
+    termsOfService: "Terms of Service",
   },
 };

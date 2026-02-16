@@ -134,5 +134,6 @@ export const ua: LandingDict = {
     rights: "Усі права захищені.",
     contact: "Написати на hello@subeye.cc",
     tagline: "Зосереджено на прозорості витрат.",
+    termsOfService: "Умови надання послуг",
   },
 };

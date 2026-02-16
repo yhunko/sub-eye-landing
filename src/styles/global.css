@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @variant dark (&:where(.dark, .dark *));
 
@@ -45,4 +46,45 @@
   margin-inline: auto;
   padding-inline: 1.5rem;
   max-width: 1120px;
+}
+
+@media print {
+  body {
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .prose {
+    max-width: 100% !important;
+    font-size: 11pt !important;
+  }
+
+  .prose h1 {
+    font-size: 18pt !important;
+  }
+
+  .prose h2 {
+    font-size: 14pt !important;
+    break-after: avoid;
+  }
+
+  .prose h3 {
+    font-size: 12pt !important;
+    break-after: avoid;
+  }
+
+  .prose a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+
+  .prose a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+  }
+
+  .prose hr {
+    border-color: #ccc !important;
+  }
 }

@@ -8,18 +8,27 @@ interface Props {
   lang: "en" | "ua";
   title: string;
   description: string;
+  pathname?: string;
+  noindex?: boolean;
 }
 
-const { lang, title, description } = Astro.props;
+const {
+  lang,
+  title,
+  description,
+  pathname = "",
+  noindex = false,
+} = Astro.props;
 
 const siteName = "SubEye";
 const baseUrl = "https://www.subeye.cc";
-const url = lang === "ua" ? `${baseUrl}/ua/` : `${baseUrl}/`;
+const url =
+  lang === "ua" ? `${baseUrl}/ua/${pathname}` : `${baseUrl}/${pathname}`;
+const altEn = `${baseUrl}/${pathname}`;
+const altUa = `${baseUrl}/ua/${pathname}`;
 const htmlLang = lang === "ua" ? "uk" : "en";
 const ogImage =
-  lang === "ua"
-    ? `${baseUrl}/og-image-ua.svg`
-    : `${baseUrl}/og-image-en.svg`;
+  lang === "ua" ? `${baseUrl}/og-image-ua.svg` : `${baseUrl}/og-image-en.svg`;
 const ogImageAlt =
   lang === "ua"
     ? "SubEye — розумний моніторинг підписок і продовжень"
@@ -36,12 +45,15 @@ const ogImageAlt =
     <meta name="theme-color" content="#10b981" />
     <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={url} />
-    <meta name="robots" content="index, follow" />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow"}
+    />
     <link rel="preconnect" href="https://flagcdn.com" crossorigin />
 
-    <link rel="alternate" hreflang="en" href={`${baseUrl}/`} />
-    <link rel="alternate" hreflang="uk" href={`${baseUrl}/ua/`} />
-    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/`} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="uk" href={altUa} />
+    <link rel="alternate" hreflang="x-default" href={altEn} />
 
     <title>{title}</title>
     <meta name="description" content={description} />

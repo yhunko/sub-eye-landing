@@ -76,5 +76,6 @@ export interface LandingDict {
     rights: string;
     contact: string;
     tagline: string;
+    termsOfService: string;
   };
 }

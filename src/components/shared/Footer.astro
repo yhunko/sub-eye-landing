@@ -1,12 +1,14 @@
 ---
 import GitHubIconIcon from "./icons/GitHubIcon.astro";
-import type { LandingDict } from "../../i18n";
+import type { Lang, LandingDict } from "../../i18n";
 
 interface Props {
+  lang: Lang;
   t: LandingDict;
 }
 
-const { t } = Astro.props;
+const { lang, t } = Astro.props;
+const tosHref = lang === "ua" ? "/ua/terms-of-service/" : "/terms-of-service/";
 ---
 
 <footer class="border-border/60 bg-background/80 border-t backdrop-blur">
@@ -15,6 +17,9 @@ const { t } = Astro.props;
   >
     <p>© {new Date().getFullYear()} SubEye. {t.footer.rights}</p>
     <div class="flex flex-col items-center gap-1 md:flex-row md:gap-4">
+      <a href={tosHref} class="hover:text-foreground transition-colors">
+        {t.footer.termsOfService}
+      </a>
       <span>{t.footer.tagline}</span>
       <!--<a-->
       <!--  href="mailto:hello@subeye.cc"-->
