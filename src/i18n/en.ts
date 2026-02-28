@@ -40,7 +40,7 @@ export const en: LandingDict = {
       duplicateTitle: "Duplicate subscription found",
       duplicateSavings: "Save €14 / mo",
       duplicateBody:
-        "Two overlapping cloud storage subscriptions detected. We’ll help you decide which one to cancel.",
+        "Two overlapping cloud storage subscriptions detected. We'll help you decide which one to cancel.",
       footerLeft: "Focused purely on recurring spend.",
       footerRight: "No ads. No clutter.",
     },
@@ -49,9 +49,9 @@ export const en: LandingDict = {
     featuresTitle: "Stay ahead of your recurring costs",
     featuresSubtitle:
       "SubEye gives you a single, trustworthy view of all your subscriptions – across cards, banks, and app stores.",
-    pricingTitle: "Simple pricing that starts free",
+    pricingTitle: "Simple, honest pricing",
     pricingSubtitle:
-      "Launch with our free plan today. We’ll add flexible paid tiers later as we grow together.",
+      "Start free, upgrade when you need more. No hidden fees, no surprise bills.",
     faqTitle: "Frequently asked questions",
     faqSubtitle: "Quick answers about how SubEye works and what to expect.",
     ctaTitle: "Ready to see your subscriptions clearly?",
@@ -76,7 +76,7 @@ export const en: LandingDict = {
     {
       title: "Spot duplicates and waste",
       description:
-        "Identify overlapping tools and forgotten trials so you can cancel what you don’t use and keep what matters.",
+        "Identify overlapping tools and forgotten trials so you can cancel what you don't use and keep what matters.",
     },
     {
       title: "Privacy-first by design",
@@ -85,28 +85,52 @@ export const en: LandingDict = {
     },
   ],
   pricing: {
-    badge: "Launch pricing",
-    name: "Free",
-    description:
-      "Perfect while we’re in early access – powerful tracking with no subscription fee.",
-    price: "$0",
-    per: "/ mo",
-    priceNote:
-      "Free during launch. Well-thought and reasonable paid tiers will arrive later.",
-    cta: "Create free account",
-    includesTitle: "What’s included",
-    includes: [
-      "Automatic detection of recurring payments (Coming soon...)",
-      "Unified view of subscriptions across accounts",
-      "Upcoming renewal timeline",
-      "Basic alerts for approaching renewals",
-      "Secure account with modern authentication",
-    ],
-    futureTitle: "Built to grow with you",
-    futureCopy:
-      "We’ll introduce paid plans later with advanced analytics, more connection types, and team features – without breaking what already works.",
-    futureExtra:
-      "If you start tracking subscriptions now, the free plan will remain a solid base even as we introduce more advanced capabilities.",
+    sectionNote:
+      "Pricing adjusts to your local currency. Taxes are calculated by Paddle at checkout where applicable.",
+    free: {
+      badge: "Always free",
+      name: "Free",
+      description:
+        "Everything you need to take control of your subscriptions — no credit card, no time limit.",
+      price: "$0",
+      per: "/ mo",
+      cta: "Get started free",
+      includesTitle: "What's included",
+      includes: [
+        "Up to 20 subscriptions",
+        "Subscription tracking & management",
+        "Analytics & spend insights",
+        "Push notifications (1 day before, 10:00)",
+        "Multi-currency support",
+        "Subscription history & change tracking",
+        "Price change scheduling",
+      ],
+    },
+    pro: {
+      badge: "Most popular",
+      name: "Pro",
+      description:
+        "For power users who want full control — more subscriptions, smarter reminders.",
+      price: "$2.50",
+      per: "/ mo",
+      priceNote: "Billed monthly. Cancel any time.",
+      cta: "Upgrade to Pro",
+      includesTitle: "Everything in Free, plus",
+      localPricesTitle: "Local pricing",
+      includes: [
+        "Up to 50 subscriptions",
+        "Custom notification schedule (time & offset)",
+        "Historical change insights",
+        "Advanced analytics (alpha)",
+        "Export tools (coming soon)",
+        "More exciting features are coming — shaped together with you",
+      ],
+      localPrices: [
+        { flag: "🇺🇦", label: "Ukraine", price: "₴99 / mo" },
+        { flag: "🇪🇺", label: "European Union", price: "€2.49 / mo" },
+        { flag: "🇬🇧", label: "United Kingdom", price: "£1.99 / mo" },
+      ],
+    },
   },
   faq: [
     {
@@ -115,7 +139,7 @@ export const en: LandingDict = {
     },
     {
       q: "Is SubEye free?",
-      a: "Yes. Right now we offer a single free plan while the product is evolving. Later we may add paid tiers for power users and teams.",
+      a: "Yes — the Free plan is free forever with up to 20 subscriptions. Pro ($2.50/mo or ₴99/mo) unlocks up to 50 subscriptions and custom notification scheduling.",
     },
     {
       q: "How does SubEye find my subscriptions?",

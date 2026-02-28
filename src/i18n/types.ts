@@ -58,18 +58,30 @@ export interface LandingDict {
   };
   features: Array<{ title: string; description: string }>;
   pricing: {
-    badge: string;
-    name: string;
-    description: string;
-    price: string;
-    per: string;
-    priceNote: string;
-    cta: string;
-    includesTitle: string;
-    includes: string[];
-    futureTitle: string;
-    futureCopy: string;
-    futureExtra: string;
+    sectionNote: string;
+    free: {
+      badge: string;
+      name: string;
+      description: string;
+      price: string;
+      per: string;
+      cta: string;
+      includesTitle: string;
+      includes: string[];
+    };
+    pro: {
+      badge: string;
+      name: string;
+      description: string;
+      price: string;
+      per: string;
+      priceNote: string;
+      cta: string;
+      includesTitle: string;
+      localPricesTitle: string;
+      includes: string[];
+      localPrices: Array<{ flag: string; label: string; price: string }>;
+    };
   };
   faq: Array<{ q: string; a: string }>;
   footer: {
