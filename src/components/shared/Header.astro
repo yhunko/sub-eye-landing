@@ -15,16 +15,16 @@ interface Props {
 const { lang, t, otherLangHref } = Astro.props;
 ---
 
-<header class="border-border/60 sticky top-0 z-30 border-b md:overflow-visible">
+<header
+  class="border-border/60 bg-background/50 sticky top-0 z-30 border-b backdrop-blur-xl md:overflow-visible"
+>
   <a
     href="#main-content"
     class="bg-foreground text-background focus-visible:ring-ring sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:left-6 focus-visible:top-4 focus-visible:z-50 focus-visible:rounded-full focus-visible:px-4 focus-visible:py-2 focus-visible:text-xs focus-visible:ring-2"
   >
     {t.nav.skipToContent}
   </a>
-  <div
-    class="bg-background/50 container flex items-center justify-between gap-4 py-4 backdrop-blur-xl"
-  >
+  <div class="container flex items-center justify-between gap-4 py-4">
     <a
       href={lang === "ua" ? "/ua/" : "/"}
       class="flex shrink-0 items-center gap-2"

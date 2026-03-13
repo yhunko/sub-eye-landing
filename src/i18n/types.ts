@@ -58,7 +58,6 @@ export interface LandingDict {
   };
   features: Array<{ title: string; description: string }>;
   pricing: {
-    sectionNote: string;
     free: {
       badge: string;
       name: string;
@@ -78,9 +77,7 @@ export interface LandingDict {
       priceNote: string;
       cta: string;
       includesTitle: string;
-      localPricesTitle: string;
       includes: string[];
-      localPrices: Array<{ flag: string; label: string; price: string }>;
     };
   };
   faq: Array<{ q: string; a: string }>;

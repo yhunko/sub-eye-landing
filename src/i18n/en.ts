@@ -85,8 +85,6 @@ export const en: LandingDict = {
     },
   ],
   pricing: {
-    sectionNote:
-      "Pricing adjusts to your local currency. Taxes are calculated by Paddle at checkout where applicable.",
     free: {
       badge: "Always free",
       name: "Free",
@@ -116,7 +114,6 @@ export const en: LandingDict = {
       priceNote: "Billed monthly. Cancel any time.",
       cta: "Upgrade to Pro",
       includesTitle: "Everything in Free, plus",
-      localPricesTitle: "Local pricing",
       includes: [
         "Up to 50 subscriptions",
         "Custom notification schedule (time & offset)",
@@ -124,11 +121,6 @@ export const en: LandingDict = {
         "Advanced analytics (alpha)",
         "Export tools (coming soon)",
         "More exciting features are coming — shaped together with you",
-      ],
-      localPrices: [
-        { flag: "🇺🇦", label: "Ukraine", price: "₴99 / mo" },
-        { flag: "🇪🇺", label: "European Union", price: "€2.49 / mo" },
-        { flag: "🇬🇧", label: "United Kingdom", price: "£1.99 / mo" },
       ],
     },
   },

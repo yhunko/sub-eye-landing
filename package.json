@@ -9,7 +9,8 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx,cjs,cts,mjs,mts,json,vue,astro,css}'"
+    "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx,cjs,cts,mjs,mts,json,vue,astro,css}'",
+    "deps:up": "bun x npm-check-updates --interactive"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
