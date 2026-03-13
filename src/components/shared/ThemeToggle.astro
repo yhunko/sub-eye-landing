@@ -41,6 +41,9 @@ const toggleId = "theme-toggle";
       const next = document.documentElement.classList.contains("dark")
         ? "light"
         : "dark";
+      const documentWithTransition = document as Document & {
+        startViewTransition?: (updateCallback: () => void) => void;
+      };
 
       const handleApply = () => {
         apply(next);
@@ -51,14 +54,12 @@ const toggleId = "theme-toggle";
         }
       };
 
-      // @ts-ignore
-      if (!document.startViewTransition) {
+      if (!documentWithTransition.startViewTransition) {
         handleApply();
         return;
       }
 
-      // @ts-ignore
-      document.startViewTransition(() => handleApply());
+      documentWithTransition.startViewTransition(() => handleApply());
     });
   })();
 </script>
