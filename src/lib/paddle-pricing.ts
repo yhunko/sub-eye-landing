@@ -17,9 +17,15 @@ interface PaddleBillingCycle {
 
 interface PaddlePrice {
   id: string;
+  product_id?: string;
   unit_price: PaddleMoney;
   unit_price_overrides?: PaddlePriceOverride[];
   billing_cycle?: PaddleBillingCycle | null;
+}
+
+interface PaddleProduct {
+  id: string;
+  name?: string | null;
 }
 
 interface PaddleApiResponse<T> {
@@ -30,10 +36,12 @@ interface ProPricingModelInput {
   lang: Lang;
   request: Request;
   fallbackPrice: string;
+  fallbackPlanName: string;
 }
 
 interface ProPricingModel {
   displayPrice: string;
+  planName: string;
 }
 
 const PADDLE_API_BASE_URL = "https://api.paddle.com";
@@ -44,6 +52,7 @@ let cachedPriceResult: {
   key: string;
   fetchedAt: number;
   price: PaddlePrice | null;
+  planName: string | null;
 } | null = null;
 
 function readRequestCountryCode(request: Request): string | null {
@@ -150,9 +159,16 @@ function resolveDisplayMoney(
     if (uahOverride) {
       return uahOverride;
     }
+
+    return resolveMoneyForCountry(price, requestCountryCode);
   }
 
-  return resolveMoneyForCountry(price, requestCountryCode);
+  const usdOverride = findOverrideMoneyByCurrency(price, "USD");
+  if (usdOverride) {
+    return usdOverride;
+  }
+
+  return price.unit_price;
 }
 
 function pickDefaultPrice(prices: PaddlePrice[]): PaddlePrice | null {
@@ -221,14 +237,43 @@ async function fetchPriceByProduct(
   return pickDefaultPrice(payload.data ?? []);
 }
 
-async function fetchPaddlePrice(): Promise<PaddlePrice | null> {
+async function fetchProductById(
+  apiKey: string,
+  productId: string,
+): Promise<PaddleProduct | null> {
+  const response = await fetch(
+    `${PADDLE_API_BASE_URL}/products/${encodeURIComponent(productId)}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        Accept: "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const payload = (await response.json()) as PaddleApiResponse<PaddleProduct>;
+  return payload.data ?? null;
+}
+
+async function fetchPaddlePricing(): Promise<{
+  price: PaddlePrice | null;
+  planName: string | null;
+}> {
   const apiKey = import.meta.env.PADDLE_API_KEY;
   const priceId =
     import.meta.env.PADDLE_PLUS_PRICE_ID ?? import.meta.env.PADDLE_PRO_PRICE_ID;
   const productId = import.meta.env.PADDLE_PLUS_PRODUCT_ID;
 
   if (!apiKey) {
-    return null;
+    return {
+      price: null,
+      planName: null,
+    };
   }
 
   const cacheKey = `${priceId ?? ""}|${productId ?? ""}`;
@@ -237,53 +282,61 @@ async function fetchPaddlePrice(): Promise<PaddlePrice | null> {
     cachedPriceResult.key === cacheKey &&
     Date.now() - cachedPriceResult.fetchedAt < CACHE_TTL_MS
   ) {
-    return cachedPriceResult.price;
+    return {
+      price: cachedPriceResult.price,
+      planName: cachedPriceResult.planName,
+    };
   }
 
   try {
+    let price: PaddlePrice | null = null;
+    let resolvedProductId = productId ?? null;
+
     if (priceId) {
-      const price = await fetchPriceById(apiKey, priceId);
-      cachedPriceResult = {
-        key: cacheKey,
-        fetchedAt: Date.now(),
-        price,
-      };
-      return price;
+      price = await fetchPriceById(apiKey, priceId);
+      resolvedProductId = resolvedProductId ?? price?.product_id ?? null;
+    } else if (productId) {
+      price = await fetchPriceByProduct(apiKey, productId);
     }
 
-    if (productId) {
-      const price = await fetchPriceByProduct(apiKey, productId);
-      cachedPriceResult = {
-        key: cacheKey,
-        fetchedAt: Date.now(),
-        price,
-      };
-      return price;
-    }
+    const product = resolvedProductId
+      ? await fetchProductById(apiKey, resolvedProductId)
+      : null;
+    const planName = product?.name?.trim() || null;
+
+    cachedPriceResult = {
+      key: cacheKey,
+      fetchedAt: Date.now(),
+      price,
+      planName,
+    };
+
+    return {
+      price,
+      planName,
+    };
   } catch {
     cachedPriceResult = {
       key: cacheKey,
       fetchedAt: Date.now(),
       price: null,
+      planName: null,
     };
-    return null;
+    return {
+      price: null,
+      planName: null,
+    };
   }
-
-  cachedPriceResult = {
-    key: cacheKey,
-    fetchedAt: Date.now(),
-    price: null,
-  };
-  return null;
 }
 
 export async function getProPricingModel(
   input: ProPricingModelInput,
 ): Promise<ProPricingModel> {
-  const paddlePrice = await fetchPaddlePrice();
+  const { price: paddlePrice, planName } = await fetchPaddlePricing();
   if (!paddlePrice) {
     return {
       displayPrice: input.fallbackPrice,
+      planName: planName ?? input.fallbackPlanName,
     };
   }
 
@@ -298,5 +351,6 @@ export async function getProPricingModel(
 
   return {
     displayPrice,
+    planName: planName ?? input.fallbackPlanName,
   };
 }

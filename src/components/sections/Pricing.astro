@@ -22,8 +22,12 @@ const pricingModel = await getProPricingModel({
   lang,
   request: Astro.request,
   fallbackPrice: t.pricing.pro.price,
+  fallbackPlanName: t.pricing.pro.name,
 });
 const { plans, quotas } = await fetchPlans();
+const plusCtaLabel = t.pricing.pro.cta.includes(t.pricing.pro.name)
+  ? t.pricing.pro.cta.replaceAll(t.pricing.pro.name, pricingModel.planName)
+  : t.pricing.pro.cta;
 
 const freePlan = plans.find((plan) => plan.id === "free") ?? plans[0];
 const plusPlan =
@@ -203,7 +207,7 @@ const plusFeatures =
           <div class="space-y-1.5">
             <Pill>{t.pricing.pro.badge}</Pill>
             <h3 class="text-lg font-semibold sm:text-xl">
-              {t.pricing.pro.name}
+              {pricingModel.planName}
             </h3>
             <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
               {t.pricing.pro.description}
@@ -223,7 +227,7 @@ const plusFeatures =
         </div>
 
         <Button href={appUrls.billing} class="w-full">
-          {t.pricing.pro.cta}
+          {plusCtaLabel}
         </Button>
 
         <div class="space-y-3 pt-1">
