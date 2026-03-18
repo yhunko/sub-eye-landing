@@ -62,6 +62,13 @@ const getFeatureLabels = (plan: PlanData): string[] =>
     .map((feature) => FEATURE_LABELS[lang][feature.key as PlanFeatureKey])
     .filter((label): label is string => Boolean(label));
 
+const getIncludedFeatureKeys = (plan: PlanData): Set<string> =>
+  new Set(
+    plan.features
+      .filter((feature) => feature.included)
+      .map((feature) => feature.key),
+  );
+
 const formatSubscriptionsLimit = (value: number): string =>
   lang === "ua" ? `До ${value} підписок` : `Up to ${value} subscriptions`;
 
@@ -98,7 +105,16 @@ const formatComparatorQuota = (value: number | null): string => {
 };
 
 const freeFeatures = getFeatureLabels(freePlan);
-const plusFeatures = getFeatureLabels(plusPlan);
+const freeFeatureKeys = getIncludedFeatureKeys(freePlan);
+const plusFeatures =
+  plusPlan.id === freePlan.id
+    ? getFeatureLabels(plusPlan)
+    : plusPlan.features
+        .filter(
+          (feature) => feature.included && !freeFeatureKeys.has(feature.key),
+        )
+        .map((feature) => FEATURE_LABELS[lang][feature.key as PlanFeatureKey])
+        .filter((label): label is string => Boolean(label));
 ---
 
 <section
