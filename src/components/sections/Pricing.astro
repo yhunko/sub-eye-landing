@@ -2,6 +2,11 @@
 import type { Lang, LandingDict } from "../../i18n";
 import { appUrls } from "../../lib/app-links";
 import { getProPricingModel } from "../../lib/paddle-pricing";
+import {
+  fetchPlans,
+  type PlanData,
+  type PlanFeatureKey,
+} from "../../lib/plans";
 import SectionHeader from "../shared/SectionHeader.astro";
 import Button from "../shared/Button.astro";
 import Card from "../shared/Card.astro";
@@ -18,6 +23,82 @@ const pricingModel = await getProPricingModel({
   request: Astro.request,
   fallbackPrice: t.pricing.pro.price,
 });
+const { plans, quotas } = await fetchPlans();
+
+const freePlan = plans.find((plan) => plan.id === "free") ?? plans[0];
+const plusPlan =
+  plans.find((plan) => plan.id === "plus") ??
+  plans.find((plan) => plan.id === "pro") ??
+  plans.find((plan) => plan.id !== "free") ??
+  plans[1] ??
+  plans[0];
+
+const FEATURE_LABELS: Record<Lang, Partial<Record<PlanFeatureKey, string>>> = {
+  en: {
+    subscriptions: "Subscription tracking",
+    analytics: "Spending analytics",
+    notifications: "Renewal notifications",
+    notificationSchedule: "Custom notification schedule",
+    telegramMessageTemplate: "Custom Telegram template",
+    currency: "Multi-currency support",
+    comparator: "Subscription comparator",
+    aiInsights: "AI-powered insights",
+  },
+  ua: {
+    subscriptions: "Трекінг підписок",
+    analytics: "Аналітика витрат",
+    notifications: "Нагадування про продовження",
+    notificationSchedule: "Гнучкий графік сповіщень",
+    telegramMessageTemplate: "Кастомний шаблон Telegram",
+    currency: "Підтримка мультивалютності",
+    comparator: "Порівняння підписок",
+    aiInsights: "AI-інсайти",
+  },
+};
+
+const getFeatureLabels = (plan: PlanData): string[] =>
+  plan.features
+    .filter((feature) => feature.included)
+    .map((feature) => FEATURE_LABELS[lang][feature.key as PlanFeatureKey])
+    .filter((label): label is string => Boolean(label));
+
+const formatSubscriptionsLimit = (value: number): string =>
+  lang === "ua" ? `До ${value} підписок` : `Up to ${value} subscriptions`;
+
+const formatCategoriesLimit = (value: number | null): string => {
+  if (value === null) {
+    return lang === "ua" ? "Безлімітні категорії" : "Unlimited categories";
+  }
+
+  return lang === "ua" ? `До ${value} категорій` : `Up to ${value} categories`;
+};
+
+const formatAiInsightsQuota = (value: number | null): string => {
+  if (value === null) {
+    return lang === "ua"
+      ? "Безлімітні AI-інсайти / місяць"
+      : "Unlimited AI insights / month";
+  }
+
+  return lang === "ua"
+    ? `${value} AI-інсайтів / місяць`
+    : `${value} AI insights / month`;
+};
+
+const formatComparatorQuota = (value: number | null): string => {
+  if (value === null) {
+    return lang === "ua"
+      ? "Безлімітні порівняння / місяць"
+      : "Unlimited comparisons / month";
+  }
+
+  return lang === "ua"
+    ? `${value} порівнянь / місяць`
+    : `${value} comparisons / month`;
+};
+
+const freeFeatures = getFeatureLabels(freePlan);
+const plusFeatures = getFeatureLabels(plusPlan);
 ---
 
 <section
@@ -66,13 +147,37 @@ const pricingModel = await getProPricingModel({
           </p>
           <ul class="space-y-2 text-xs sm:text-sm">
             {
-              t.pricing.free.includes.map((item) => (
+              freeFeatures.map((item) => (
                 <li class="flex items-center gap-2">
                   <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
                   <span class="text-muted-foreground">{item}</span>
                 </li>
               ))
             }
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatSubscriptionsLimit(freePlan.limits.maxSubscriptions)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatCategoriesLimit(freePlan.limits.maxCategories)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatAiInsightsQuota(quotas.free.comparatorAiMonthly)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatComparatorQuota(quotas.free.comparatorMonthly)}
+              </span>
+            </li>
           </ul>
         </div>
       </Card>
@@ -113,13 +218,37 @@ const pricingModel = await getProPricingModel({
           </p>
           <ul class="space-y-2 text-xs sm:text-sm">
             {
-              t.pricing.pro.includes.map((item) => (
+              plusFeatures.map((item) => (
                 <li class="flex items-center gap-2">
                   <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
                   <span class="text-muted-foreground">{item}</span>
                 </li>
               ))
             }
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatSubscriptionsLimit(plusPlan.limits.maxSubscriptions)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatCategoriesLimit(plusPlan.limits.maxCategories)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatAiInsightsQuota(quotas.plus.comparatorAiMonthly)}
+              </span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+              <span class="text-muted-foreground">
+                {formatComparatorQuota(quotas.plus.comparatorMonthly)}
+              </span>
+            </li>
           </ul>
         </div>
       </Card>
