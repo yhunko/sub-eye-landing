@@ -161,26 +161,24 @@ const plusFeatures =
 
     <div class="grid items-start gap-6 lg:grid-cols-2">
       <Card class="space-y-5 p-6 sm:p-7 lg:p-8">
-        <div
-          class="flex flex-col flex-wrap items-baseline justify-between gap-4"
-        >
-          <div class="space-y-1.5">
-            <Pill>{t.pricing.free.badge}</Pill>
+        <div class="space-y-1.5">
+          <Pill>{t.pricing.free.badge}</Pill>
+          <div class="flex items-baseline justify-between gap-2">
             <h3 class="text-lg font-semibold sm:text-xl">
               {t.pricing.free.name}
             </h3>
-            <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
-              {t.pricing.free.description}
-            </p>
+            <div class="shrink-0">
+              <span class="text-2xl font-semibold sm:text-3xl"
+                >{t.pricing.free.price}</span
+              >
+              <span class="text-muted-foreground text-xs"
+                >{t.pricing.free.per}</span
+              >
+            </div>
           </div>
-          <div class="self-end">
-            <span class="text-2xl font-semibold sm:text-3xl"
-              >{t.pricing.free.price}</span
-            >
-            <span class="text-muted-foreground text-xs"
-              >{t.pricing.free.per}</span
-            >
-          </div>
+          <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
+            {t.pricing.free.description}
+          </p>
         </div>
 
         <Button href={appUrls.billing} class="w-full">
@@ -231,27 +229,27 @@ const plusFeatures =
       </Card>
 
       <Card variant="primary" class="space-y-5 p-6 sm:p-7 lg:p-8">
-        <div class="flex flex-col gap-4">
-          <div class="space-y-1.5">
-            <Pill>{t.pricing.pro.badge}</Pill>
+        <div class="space-y-1.5">
+          <Pill>{t.pricing.pro.badge}</Pill>
+          <div class="flex items-baseline justify-between gap-2">
             <h3 class="text-lg font-semibold sm:text-xl">
               {pricingModel.planName}
             </h3>
-            <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
-              {t.pricing.pro.description}
-            </p>
+            <div class="shrink-0">
+              <span class="text-2xl font-semibold sm:text-3xl"
+                >{pricingModel.displayPrice}</span
+              >
+              <span class="text-muted-foreground text-xs"
+                >{t.pricing.pro.per}</span
+              >
+            </div>
           </div>
-          <div>
-            <span class="text-2xl font-semibold sm:text-3xl"
-              >{pricingModel.displayPrice}</span
-            >
-            <span class="text-muted-foreground text-xs"
-              >{t.pricing.pro.per}</span
-            >
-            <p class="text-muted-foreground mt-1 text-[11px]">
-              {t.pricing.pro.priceNote}
-            </p>
-          </div>
+          <p class="text-muted-foreground max-w-md text-xs sm:text-sm">
+            {t.pricing.pro.description}
+          </p>
+          <p class="text-muted-foreground text-[11px]">
+            {t.pricing.pro.priceNote}
+          </p>
         </div>
 
         <Button href={appUrls.billing} class="w-full">
