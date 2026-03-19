@@ -98,21 +98,6 @@ const ogImageAlt =
           logo: `${baseUrl}/favicon.svg`,
           sameAs: ["https://github.com/yhunko/sub-eye"],
         },
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: siteName,
-          operatingSystem: "Web",
-          applicationCategory: "FinanceApplication",
-          url,
-          offers: {
-            "@type": "Offer",
-            name: "Free",
-            price: "0",
-            priceCurrency: lang === "ua" ? "UAH" : "USD",
-          },
-          description,
-        },
       ])}
     />
     <script is:inline>

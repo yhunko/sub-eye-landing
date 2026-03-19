@@ -114,24 +114,39 @@ const plusFeatures =
       );
 ---
 
-{
-  pricingModel.rawAmount !== null && (
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: "SubEye",
-        offers: {
-          "@type": "Offer",
-          name: pricingModel.planName,
-          price: String(pricingModel.rawAmount),
-          priceCurrency: pricingModel.currencyCode,
-        },
-      })}
-    />
-  )
-}
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "SubEye",
+    operatingSystem: "Web",
+    applicationCategory: "FinanceApplication",
+    url: lang === "ua" ? "https://www.subeye.cc/ua/" : "https://www.subeye.cc/",
+    offers:
+      pricingModel.rawAmount !== null
+        ? [
+            {
+              "@type": "Offer",
+              name: t.pricing.free.name,
+              price: "0",
+              priceCurrency: pricingModel.currencyCode,
+            },
+            {
+              "@type": "Offer",
+              name: pricingModel.planName,
+              price: String(pricingModel.rawAmount),
+              priceCurrency: pricingModel.currencyCode,
+            },
+          ]
+        : {
+            "@type": "Offer",
+            name: t.pricing.free.name,
+            price: "0",
+            priceCurrency: lang === "ua" ? "UAH" : "USD",
+          },
+  })}
+/>
 
 <section
   id="pricing"
