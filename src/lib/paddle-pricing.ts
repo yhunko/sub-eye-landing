@@ -39,9 +39,15 @@ interface ProPricingModelInput {
   fallbackPlanName: string;
 }
 
-interface ProPricingModel {
+export interface ProPricingModel {
   displayPrice: string;
   planName: string;
+  /** Normalized price amount (e.g. 2.5) — null when data comes from fallback. */
+  rawAmount: number | null;
+  /** ISO currency code (e.g. "USD") — null when data comes from fallback. */
+  currencyCode: string | null;
+  /** Indicates whether pricing data came from Paddle or the hardcoded fallback. */
+  source: "paddle" | "fallback";
 }
 
 const PADDLE_API_BASE_URL = "https://api.paddle.com";
@@ -148,7 +154,7 @@ function resolveDisplayMoney(
   price: PaddlePrice,
   lang: Lang,
   requestCountryCode: string | null,
-): PaddleMoney {
+): PaddleMoney | null {
   if (lang === "ua") {
     const uaOverride = findOverrideMoneyByCountry(price, "UA");
     if (uaOverride) {
@@ -163,12 +169,19 @@ function resolveDisplayMoney(
     return resolveMoneyForCountry(price, requestCountryCode);
   }
 
+  // For en: prefer explicit USD override, then USD base price.
+  // If the Paddle base currency is not USD (e.g. UAH), return null so the
+  // caller falls back to the hardcoded fallback price string.
   const usdOverride = findOverrideMoneyByCurrency(price, "USD");
   if (usdOverride) {
     return usdOverride;
   }
 
-  return price.unit_price;
+  if (price.unit_price.currency_code === "USD") {
+    return price.unit_price;
+  }
+
+  return null;
 }
 
 function pickDefaultPrice(prices: PaddlePrice[]): PaddlePrice | null {
@@ -333,24 +346,52 @@ export async function getProPricingModel(
   input: ProPricingModelInput,
 ): Promise<ProPricingModel> {
   const { price: paddlePrice, planName } = await fetchPaddlePricing();
+
   if (!paddlePrice) {
+    console.warn(
+      "[paddle-pricing] no price data available, rendering fallback price",
+    );
     return {
       displayPrice: input.fallbackPrice,
       planName: planName ?? input.fallbackPlanName,
+      rawAmount: null,
+      currencyCode: null,
+      source: "fallback",
     };
   }
 
   const countryCode = readRequestCountryCode(input.request);
-  const displayMoney = resolveDisplayMoney(
-    paddlePrice,
-    input.lang,
-    countryCode,
+  const displayMoney = resolveDisplayMoney(paddlePrice, input.lang, countryCode);
+
+  if (!displayMoney) {
+    console.warn(
+      `[paddle-pricing] no ${input.lang === "en" ? "USD" : "UAH"} price found in Paddle data, rendering fallback price`,
+    );
+    return {
+      displayPrice: input.fallbackPrice,
+      planName: planName ?? input.fallbackPlanName,
+      rawAmount: null,
+      currencyCode: null,
+      source: "fallback",
+    };
+  }
+
+  const rawAmount = normalizePaddleAmount(
+    displayMoney.amount,
+    displayMoney.currency_code,
   );
   const displayPrice =
     formatPaddleMoney(displayMoney, input.lang) ?? input.fallbackPrice;
 
+  console.info(
+    `[paddle-pricing] live data: ${displayPrice} (${displayMoney.currency_code}), plan: "${planName ?? input.fallbackPlanName}", country: ${countryCode ?? "unknown"}`,
+  );
+
   return {
     displayPrice,
     planName: planName ?? input.fallbackPlanName,
+    rawAmount: Number.isFinite(rawAmount) ? rawAmount : null,
+    currencyCode: displayMoney.currency_code,
+    source: "paddle",
   };
 }

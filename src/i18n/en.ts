@@ -94,15 +94,6 @@ export const en: LandingDict = {
       per: "/ mo",
       cta: "Get started free",
       includesTitle: "What's included",
-      includes: [
-        "Up to 20 subscriptions",
-        "Subscription tracking & management",
-        "Analytics & spend insights",
-        "Push notifications (1 day before, 10:00)",
-        "Multi-currency support",
-        "Subscription history & change tracking",
-        "Price change scheduling",
-      ],
     },
     pro: {
       badge: "Most popular",
@@ -114,14 +105,6 @@ export const en: LandingDict = {
       priceNote: "Billed monthly. Cancel any time.",
       cta: "Upgrade to Pro",
       includesTitle: "Everything in Free, plus",
-      includes: [
-        "Up to 50 subscriptions",
-        "Custom notification schedule (time & offset)",
-        "Historical change insights",
-        "Advanced analytics (alpha)",
-        "Export tools (coming soon)",
-        "More exciting features are coming — shaped together with you",
-      ],
     },
   },
   faq: [

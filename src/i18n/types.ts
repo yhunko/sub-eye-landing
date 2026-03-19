@@ -66,7 +66,6 @@ export interface LandingDict {
       per: string;
       cta: string;
       includesTitle: string;
-      includes: string[];
     };
     pro: {
       badge: string;
@@ -77,7 +76,6 @@ export interface LandingDict {
       priceNote: string;
       cta: string;
       includesTitle: string;
-      includes: string[];
     };
   };
   faq: Array<{ q: string; a: string }>;

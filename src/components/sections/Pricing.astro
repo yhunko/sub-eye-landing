@@ -60,18 +60,14 @@ const FEATURE_LABELS: Record<Lang, Partial<Record<PlanFeatureKey, string>>> = {
   },
 };
 
-const getFeatureLabels = (plan: PlanData): string[] =>
+const getFeatureLabels = (
+  plan: PlanData,
+  excludeKeys?: Set<string>,
+): string[] =>
   plan.features
-    .filter((feature) => feature.included)
-    .map((feature) => FEATURE_LABELS[lang][feature.key as PlanFeatureKey])
+    .filter((f) => f.included && !excludeKeys?.has(f.key))
+    .map((f) => FEATURE_LABELS[lang][f.key as PlanFeatureKey])
     .filter((label): label is string => Boolean(label));
-
-const getIncludedFeatureKeys = (plan: PlanData): Set<string> =>
-  new Set(
-    plan.features
-      .filter((feature) => feature.included)
-      .map((feature) => feature.key),
-  );
 
 const formatSubscriptionsLimit = (value: number): string =>
   lang === "ua" ? `До ${value} підписок` : `Up to ${value} subscriptions`;
@@ -109,20 +105,37 @@ const formatComparatorQuota = (value: number | null): string => {
 };
 
 const freeFeatures = getFeatureLabels(freePlan);
-const freeFeatureKeys = getIncludedFeatureKeys(freePlan);
 const plusFeatures =
   plusPlan.id === freePlan.id
     ? getFeatureLabels(plusPlan)
-    : plusPlan.features
-        .filter(
-          (feature) => feature.included && !freeFeatureKeys.has(feature.key),
-        )
-        .map((feature) => FEATURE_LABELS[lang][feature.key as PlanFeatureKey])
-        .filter((label): label is string => Boolean(label));
+    : getFeatureLabels(
+        plusPlan,
+        new Set(freePlan.features.filter((f) => f.included).map((f) => f.key)),
+      );
 ---
+
+{
+  pricingModel.rawAmount !== null && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "SubEye",
+        offers: {
+          "@type": "Offer",
+          name: pricingModel.planName,
+          price: String(pricingModel.rawAmount),
+          priceCurrency: pricingModel.currencyCode,
+        },
+      })}
+    />
+  )
+}
 
 <section
   id="pricing"
+  data-price-source={pricingModel.source}
   class="border-border/60 scroll-mt-12 border-b bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.32),transparent_55%)]"
 >
   <div class="container space-y-10 py-12 sm:py-16 lg:py-20">

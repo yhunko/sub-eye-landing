@@ -103,6 +103,7 @@ function isPlansResponse(payload: unknown): payload is PlansResponse {
 
 export async function fetchPlans(): Promise<PlansResponse> {
   if (cache && Date.now() - cache.fetchedAt < CACHE_TTL_MS) {
+    console.info("[plans] serving from cache");
     return cache.value;
   }
 
@@ -135,6 +136,7 @@ export async function fetchPlans(): Promise<PlansResponse> {
       value: payload,
     };
 
+    console.info("[plans] live data fetched from API");
     return payload;
   } catch (error) {
     console.error("[plans] fetch failed, using fallback", error);

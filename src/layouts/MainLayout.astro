@@ -50,6 +50,7 @@ const ogImageAlt =
       content={noindex ? "noindex, nofollow" : "index, follow"}
     />
     <link rel="preconnect" href="https://flagcdn.com" crossorigin />
+    <link rel="dns-prefetch" href="https://app.subeye.cc" />
 
     <link rel="alternate" hreflang="en" href={altEn} />
     <link rel="alternate" hreflang="uk" href={altUa} />
@@ -106,6 +107,7 @@ const ogImageAlt =
           url,
           offers: {
             "@type": "Offer",
+            name: "Free",
             price: "0",
             priceCurrency: lang === "ua" ? "UAH" : "USD",
           },
