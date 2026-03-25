@@ -15,7 +15,7 @@ export const en: LandingDict = {
     versionLive: "is now live",
     title: "See every subscription before it renews.",
     subtitle:
-      "SubEye connects to your banks and apps to surface every recurring charge, so you never overpay for forgotten subscriptions again.",
+      "Track all your subscriptions in one place — see every renewal before it hits, and never overpay for a service you forgot about.",
     primaryCta: "Start for free",
     secondaryCta: "View the app",
     primaryNote: "No credit card required.",
@@ -48,7 +48,7 @@ export const en: LandingDict = {
   sections: {
     featuresTitle: "Stay ahead of your recurring costs",
     featuresSubtitle:
-      "SubEye gives you a single, trustworthy view of all your subscriptions – across cards, banks, and app stores.",
+      "SubEye gives you a single, trustworthy view of all your subscriptions — renewals, costs, and alerts, all in one place.",
     pricingTitle: "Simple, honest pricing",
     pricingSubtitle:
       "Start free, upgrade when you need more. No hidden fees, no surprise bills.",
@@ -66,7 +66,7 @@ export const en: LandingDict = {
     {
       title: "Unified subscription radar",
       description:
-        "Connect banks and cards to automatically detect subscriptions, trials, and recurring charges in one place.",
+        "Add your subscriptions manually and get a complete radar of every recurring charge — with automatic bank detection coming soon.",
     },
     {
       title: "Upcoming renewals, clearly listed",
