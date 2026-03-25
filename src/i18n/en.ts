@@ -118,7 +118,7 @@ export const en: LandingDict = {
     },
     {
       q: "How does SubEye find my subscriptions?",
-      a: "[COMING SOON] SubEye connects to your financial data sources and analyzes transactions to detect recurring charges, trials, and subscription-like payments.",
+      a: "You can add subscriptions manually today. Automatic bank and card connection is coming soon — once live, SubEye will analyze your transactions to detect recurring charges and trials automatically.",
     },
     {
       q: "Can I cancel subscriptions from SubEye?",
@@ -126,7 +126,7 @@ export const en: LandingDict = {
     },
     {
       q: "How do you handle my data?",
-      a: "We take privacy seriously. Your data is only used to provide you with insights about your subscriptions.",
+      a: "We take privacy seriously. Your data is only used to surface your subscriptions. We never sell your data, show ads, or share information with third parties.",
     },
   ],
   footer: {

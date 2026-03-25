@@ -28,7 +28,7 @@ const altEn = `${baseUrl}/${pathname}`;
 const altUa = `${baseUrl}/ua/${pathname}`;
 const htmlLang = lang === "ua" ? "uk" : "en";
 const ogImage =
-  lang === "ua" ? `${baseUrl}/og-image-ua.svg` : `${baseUrl}/og-image-en.svg`;
+  lang === "ua" ? `${baseUrl}/og-image-ua.png` : `${baseUrl}/og-image-en.png`;
 const ogImageAlt =
   lang === "ua"
     ? "SubEye — розумний моніторинг підписок і продовжень"
@@ -42,6 +42,7 @@ const ogImageAlt =
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="application-name" content="SubEye" />
     <meta name="theme-color" content="#10b981" />
     <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={url} />
@@ -69,7 +70,7 @@ const ogImageAlt =
     {lang === "ua" && <meta property="og:locale:alternate" content="en_US" />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:alt" content={ogImageAlt} />
-    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -95,7 +96,20 @@ const ogImageAlt =
           "@type": "Organization",
           name: siteName,
           url: baseUrl,
-          logo: `${baseUrl}/favicon.svg`,
+          description:
+            "SubEye is a subscription monitoring service that helps individuals track recurring charges, upcoming renewals, and identify forgotten or duplicate subscriptions.",
+          foundingYear: 2024,
+          logo: {
+            "@type": "ImageObject",
+            url: `${baseUrl}/favicon.svg`,
+            width: 512,
+            height: 512,
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            email: "hello@subeye.cc",
+            contactType: "customer support",
+          },
           sameAs: ["https://github.com/yhunko/sub-eye"],
         },
       ])}

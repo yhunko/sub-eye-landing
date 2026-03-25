@@ -112,6 +112,7 @@ const plusFeatures =
         plusPlan,
         new Set(freePlan.features.filter((f) => f.included).map((f) => f.key)),
       );
+const allFeatureLabels = [...new Set([...freeFeatures, ...plusFeatures])];
 ---
 
 <script
@@ -120,9 +121,18 @@ const plusFeatures =
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "SubEye",
+    description:
+      lang === "ua"
+        ? "SubEye — безкоштовний трекер підписок. Відстежуйте регулярні списання, отримуйте нагадування про продовження та знаходьте дублікати."
+        : "SubEye is a free subscription tracker. Monitor recurring charges, get renewal reminders, and spot duplicate or forgotten subscriptions.",
     operatingSystem: "Web",
     applicationCategory: "FinanceApplication",
     url: lang === "ua" ? "https://www.subeye.cc/ua/" : "https://www.subeye.cc/",
+    featureList: allFeatureLabels,
+    screenshot:
+      lang === "ua"
+        ? "https://www.subeye.cc/og-image-ua.png"
+        : "https://www.subeye.cc/og-image-en.png",
     offers:
       pricingModel.rawAmount !== null
         ? [
@@ -131,12 +141,14 @@ const plusFeatures =
               name: t.pricing.free.name,
               price: "0",
               priceCurrency: pricingModel.currencyCode,
+              description: t.pricing.free.description,
             },
             {
               "@type": "Offer",
               name: pricingModel.planName,
               price: String(pricingModel.rawAmount),
               priceCurrency: pricingModel.currencyCode,
+              description: t.pricing.pro.description,
             },
           ]
         : {
@@ -144,6 +156,7 @@ const plusFeatures =
             name: t.pricing.free.name,
             price: "0",
             priceCurrency: lang === "ua" ? "UAH" : "USD",
+            description: t.pricing.free.description,
           },
   })}
 />
