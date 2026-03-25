@@ -6,13 +6,15 @@ export type PlanFeatureKey =
   | "telegramMessageTemplate"
   | "currency"
   | "comparator"
-  | "aiInsights";
+  | "aiInsights"
+  | "familyGroup";
 
 export interface PlanData {
   id: string;
   limits: {
     maxSubscriptions: number;
     maxCategories: number | null;
+    maxFamilyMembers?: number;
   };
   features: Array<{
     key: PlanFeatureKey | string;
@@ -32,6 +34,7 @@ export interface PlansResponse {
       comparatorMonthly: number | null;
     };
   };
+  featureLabels: Record<PlanFeatureKey, { en: string; uk: string }>;
 }
 
 const PLANS_API_URL = "https://app.subeye.cc/api/billing/plans";
@@ -51,11 +54,12 @@ const FALLBACK: PlansResponse = {
         { key: "currency", included: true },
         { key: "comparator", included: true },
         { key: "aiInsights", included: true },
+        { key: "familyGroup", included: false },
       ],
     },
     {
       id: "plus",
-      limits: { maxSubscriptions: 50, maxCategories: null },
+      limits: { maxSubscriptions: 50, maxCategories: null, maxFamilyMembers: 5 },
       features: [
         { key: "subscriptions", included: true },
         { key: "analytics", included: true },
@@ -65,6 +69,7 @@ const FALLBACK: PlansResponse = {
         { key: "currency", included: true },
         { key: "comparator", included: true },
         { key: "aiInsights", included: true },
+        { key: "familyGroup", included: true },
       ],
     },
   ],
@@ -77,6 +82,17 @@ const FALLBACK: PlansResponse = {
       comparatorAiMonthly: 300,
       comparatorMonthly: null,
     },
+  },
+  featureLabels: {
+    subscriptions: { en: "Subscription tracking", uk: "Трекінг підписок" },
+    analytics: { en: "Spending analytics", uk: "Аналітика витрат" },
+    notifications: { en: "Renewal notifications", uk: "Нагадування про продовження" },
+    notificationSchedule: { en: "Custom notification schedule", uk: "Гнучкий графік сповіщень" },
+    telegramMessageTemplate: { en: "Custom Telegram template", uk: "Кастомний шаблон Telegram" },
+    currency: { en: "Multi-currency support", uk: "Підтримка мультивалютності" },
+    comparator: { en: "Subscription comparator", uk: "Порівняння підписок" },
+    aiInsights: { en: "AI-powered insights", uk: "AI-інсайти" },
+    familyGroup: { en: "Family group for shared subscriptions", uk: "Сімейна група для спільних підписок" },
   },
 };
 
@@ -91,7 +107,7 @@ function isPlansResponse(payload: unknown): payload is PlansResponse {
   }
 
   const candidate = payload as Partial<PlansResponse>;
-  if (!Array.isArray(candidate.plans) || !candidate.quotas) {
+  if (!Array.isArray(candidate.plans) || !candidate.quotas || !candidate.featureLabels) {
     return false;
   }
 

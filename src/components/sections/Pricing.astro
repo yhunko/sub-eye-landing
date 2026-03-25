@@ -18,13 +18,14 @@ interface Props {
 }
 
 const { lang, t } = Astro.props;
+const langKey = lang === "ua" ? "uk" : "en";
 const pricingModel = await getProPricingModel({
   lang,
   request: Astro.request,
   fallbackPrice: t.pricing.pro.price,
   fallbackPlanName: t.pricing.pro.name,
 });
-const { plans, quotas } = await fetchPlans();
+const { plans, quotas, featureLabels } = await fetchPlans();
 const plusCtaLabel = t.pricing.pro.cta.includes(t.pricing.pro.name)
   ? t.pricing.pro.cta.replaceAll(t.pricing.pro.name, pricingModel.planName)
   : t.pricing.pro.cta;
@@ -37,36 +38,13 @@ const plusPlan =
   plans[1] ??
   plans[0];
 
-const FEATURE_LABELS: Record<Lang, Partial<Record<PlanFeatureKey, string>>> = {
-  en: {
-    subscriptions: "Subscription tracking",
-    analytics: "Spending analytics",
-    notifications: "Renewal notifications",
-    notificationSchedule: "Custom notification schedule",
-    telegramMessageTemplate: "Custom Telegram template",
-    currency: "Multi-currency support",
-    comparator: "Subscription comparator",
-    aiInsights: "AI-powered insights",
-  },
-  ua: {
-    subscriptions: "Трекінг підписок",
-    analytics: "Аналітика витрат",
-    notifications: "Нагадування про продовження",
-    notificationSchedule: "Гнучкий графік сповіщень",
-    telegramMessageTemplate: "Кастомний шаблон Telegram",
-    currency: "Підтримка мультивалютності",
-    comparator: "Порівняння підписок",
-    aiInsights: "AI-інсайти",
-  },
-};
-
 const getFeatureLabels = (
   plan: PlanData,
   excludeKeys?: Set<string>,
 ): string[] =>
   plan.features
     .filter((f) => f.included && !excludeKeys?.has(f.key))
-    .map((f) => FEATURE_LABELS[lang][f.key as PlanFeatureKey])
+    .map((f) => featureLabels[f.key as PlanFeatureKey]?.[langKey])
     .filter((label): label is string => Boolean(label));
 
 const formatSubscriptionsLimit = (value: number): string =>
@@ -103,6 +81,11 @@ const formatComparatorQuota = (value: number | null): string => {
     ? `${value} порівнянь / місяць`
     : `${value} comparisons / month`;
 };
+
+const formatFamilyMembersLimit = (value: number): string =>
+  lang === "ua"
+    ? `Поділіться з ${value} членами родини`
+    : `Share with up to ${value} family members`;
 
 const freeFeatures = getFeatureLabels(freePlan);
 const plusFeatures =
@@ -308,6 +291,14 @@ const allFeatureLabels = [...new Set([...freeFeatures, ...plusFeatures])];
                 {formatComparatorQuota(quotas.plus.comparatorMonthly)}
               </span>
             </li>
+            {plusPlan.limits.maxFamilyMembers && (
+              <li class="flex items-center gap-2">
+                <span class="inline-flex size-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.4)]" />
+                <span class="text-muted-foreground">
+                  {formatFamilyMembersLimit(plusPlan.limits.maxFamilyMembers)}
+                </span>
+              </li>
+            )}
           </ul>
         </div>
       </Card>
